@@ -10,6 +10,8 @@ services:
     depends_on:
       - php-fpm
     restart: always
+    networks:
+      - pets-demo_default
   php-fpm:
     build:
       context: .
@@ -28,6 +30,8 @@ services:
     depends_on:
       - mysql
     restart: always
+    networks:
+      - pets-demo_default
   php-cli:
     build:
       context: .
@@ -42,6 +46,8 @@ services:
       - composer:/tmp/composer-cache
     profiles:
       - 'cli-tools'        # the profile is needed in order not to start this service with "docker compose up" command
+    networks:
+      - pets-demo_default
   mysql:
     image: mysql:8.0
     volumes:
@@ -55,7 +61,14 @@ services:
       MYSQL_USER: ${DATABASE_USER}
       MYSQL_PASSWORD: ${DATABASE_PASSWORD}
     restart: always
+    networks:
+      - pets-demo_default
 
 volumes:
   composer:
   mysql:
+
+
+networks:
+  pets-demo_default:
+    external: true
